@@ -35,11 +35,15 @@ then
 				--log-level "${LOG_LEVEL}" \
 				--credentials-location "${SPOTIFY_CREDS_JSON}" \
 				-p -l ${SPOTIFY_RC_PATH} \
-				&& /usr/local/bin/spodcast \
-					-c ${SPODCAST_CONFIG_JSON} \
-					--log-level ${LOG_LEVEL} \
-					--max-episodes ${MAX_EPISODES} \
-					"${SPOTIFY_PODCAST_URLS}"
+
+			for url in ${SPOTIFY_PODCAST_URLS}; do
+				/usr/local/bin/spodcast \
+					-c "${SPODCAST_CONFIG_JSON}" \
+					--log-level "${LOG_LEVEL}" \
+					--max-episodes "${MAX_EPISODES}" \
+     					--transcode "${TRANSCODE}" \
+					"$url"
+			done
 		else
 			echo "SPOTIFY_PODCAST_URLS is defined, but no credentials were detected. Please set the SPOTIFY_USERNAME and SPOTIFY_PASSWORD variables."
 			exit 1
